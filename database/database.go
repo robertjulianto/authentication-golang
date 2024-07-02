@@ -22,6 +22,7 @@ type database struct {
 
 type Database interface {
 	Run()
+	GetInstance() *gorm.DB
 }
 
 func ConnectToDataBase() (*database, error) {
@@ -69,4 +70,8 @@ func (db *database) Run() {
 		types.RoleAccess{},
 		types.UserRole{},
 	)
+}
+
+func (db *database) GetInstance() *gorm.DB {
+	return db.Instance
 }

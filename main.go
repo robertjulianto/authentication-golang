@@ -1,8 +1,12 @@
 package main
 
 import (
+	"fmt"
+	"ims/api"
 	"ims/database"
 	"log"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -12,4 +16,11 @@ func main() {
 	}
 
 	db.Run()
+
+	envFile, _ := godotenv.Read(".env")
+	listenAddr := envFile["SERVERADDRESS"]
+
+	server := api.NewServer(listenAddr, db)
+	fmt.Println("Server is running on port :", listenAddr)
+	log.Fatal(server.Start())
 }
