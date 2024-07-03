@@ -39,6 +39,9 @@ func (repo *roleRepository) GetAllRoles() []types.Role {
 func (repo *roleRepository) GetRoleByID(ID int) *types.Role {
 	var role *types.Role
 	repo.db.GetInstance().Find(&role, ID)
+	if role.ID == 0 {
+		return nil
+	}
 	return role
 }
 
