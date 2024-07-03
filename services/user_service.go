@@ -14,7 +14,7 @@ type userService struct {
 type UserService interface {
 	CreateUser(username string, password string, displayName string) error
 	GetAllUsers() []types.User
-	GetUserByID(ID int) types.User
+	GetUserByID(ID int) *types.User
 	UpdateUser(spec UpdateUserSpec) error
 	DeleteUserByID(ID int) error
 }
@@ -32,7 +32,7 @@ func NewUserService(userRepository repositories.UserRepository) *userService {
 
 func (service *userService) CreateUser(username string, password string, displayName string) error {
 	user := service.userRepository.GetUserByUserName(username)
-	if user.ID != 0 {
+	if user != nil {
 		errorMsg := fmt.Sprintf("User with username %v already exists", username)
 		return errors.New(errorMsg)
 	}
@@ -44,7 +44,7 @@ func (service *userService) GetAllUsers() []types.User {
 	return service.userRepository.GetAllUsers()
 }
 
-func (service *userService) GetUserByID(ID int) types.User {
+func (service *userService) GetUserByID(ID int) *types.User {
 	return service.userRepository.GetUserByID(ID)
 }
 
@@ -53,7 +53,7 @@ func (service *userService) UpdateUser(spec UpdateUserSpec) error {
 	user.Username = spec.UserName
 	user.Password = spec.Password
 	user.DisplayName = spec.DisplayName
-	err := service.userRepository.UpdateUser(&user)
+	err := service.userRepository.UpdateUser(user)
 	return err
 }
 

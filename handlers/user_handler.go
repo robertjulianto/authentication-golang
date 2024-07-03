@@ -77,6 +77,10 @@ func (handler *userHandler) HandleGetAllUsers(ctx *gin.Context) {
 func (handler *userHandler) HandleGetUserByID(ctx *gin.Context) {
 	userID, _ := strconv.Atoi(ctx.Param("id"))
 	user := handler.userService.GetUserByID(userID)
+	if user == nil {
+		ctx.JSON(http.StatusOK, gin.H{})
+		return
+	}
 	ctx.JSON(http.StatusOK, user)
 }
 
