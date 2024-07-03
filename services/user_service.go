@@ -1,6 +1,8 @@
 package services
 
 import (
+	"errors"
+	"fmt"
 	"ims/repositories"
 	"ims/types"
 )
@@ -29,6 +31,11 @@ func NewUserService(userRepository repositories.UserRepository) *userService {
 }
 
 func (service *userService) CreateUser(username string, password string, displayName string) error {
+	user := service.userRepository.GetUserByUserName(username)
+	if user.ID != 0 {
+		errorMsg := fmt.Sprintf("User with username %v already exists", username)
+		return errors.New(errorMsg)
+	}
 	err := service.userRepository.CreateUser(username, password, displayName)
 	return err
 }
