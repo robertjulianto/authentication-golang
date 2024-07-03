@@ -65,6 +65,7 @@ func (handler *userHandler) HandleCreateUser(ctx *gin.Context) {
 	})
 
 }
+
 func (handler *userHandler) HandleGetAllUsers(ctx *gin.Context) {
 	users := handler.userService.GetAllUsers()
 
@@ -72,11 +73,13 @@ func (handler *userHandler) HandleGetAllUsers(ctx *gin.Context) {
 		"users": users,
 	})
 }
+
 func (handler *userHandler) HandleGetUserByID(ctx *gin.Context) {
 	userID, _ := strconv.Atoi(ctx.Param("id"))
 	user := handler.userService.GetUserByID(userID)
 	ctx.JSON(http.StatusOK, user)
 }
+
 func (handler *userHandler) HandleUpdateUser(ctx *gin.Context) {
 	var handleUserRequest handleUserRequest
 	err := ctx.ShouldBindBodyWithJSON(&handleUserRequest)
@@ -112,8 +115,8 @@ func (handler *userHandler) HandleUpdateUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"error": "",
 	})
-
 }
+
 func (handler *userHandler) HandleDeleteUser(ctx *gin.Context) {
 	userID, _ := strconv.Atoi(ctx.Param("id"))
 	err := handler.userService.DeleteUserByID(userID)
