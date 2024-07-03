@@ -56,7 +56,7 @@ func (handler *userHandler) HandleCreateUser(ctx *gin.Context) {
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": err,
+			"error": err.Error(),
 		})
 		return
 	}
@@ -108,7 +108,7 @@ func (handler *userHandler) HandleUpdateUser(ctx *gin.Context) {
 	err = handler.userService.UpdateUser(spec)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": err,
+			"error": err.Error(),
 		})
 		return
 	}
@@ -122,7 +122,7 @@ func (handler *userHandler) HandleDeleteUser(ctx *gin.Context) {
 	err := handler.userService.DeleteUserByID(userID)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": err,
+			"error": err.Error(),
 		})
 		return
 	}

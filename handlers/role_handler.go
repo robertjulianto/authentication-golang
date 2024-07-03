@@ -94,14 +94,14 @@ func (handler *roleHandler) HandleUpdateRole(ctx *gin.Context) {
 
 	roleID, _ := strconv.Atoi(ctx.Param("id"))
 	spec := services.UpdateRoleSpec{
-		ID:          roleID,
-		RoleName:    handleRoleRequest.RoleName,
+		ID:       roleID,
+		RoleName: handleRoleRequest.RoleName,
 	}
 
 	err = handler.roleService.UpdateRole(spec)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": err,
+			"error": err.Error(),
 		})
 		return
 	}
@@ -116,7 +116,7 @@ func (handler *roleHandler) HandleDeleteRole(ctx *gin.Context) {
 	err := handler.roleService.DeleteRoleByID(roleID)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": err,
+			"error": err.Error(),
 		})
 		return
 	}
