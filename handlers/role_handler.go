@@ -51,7 +51,7 @@ func (handler *roleHandler) HandleCreateRole(ctx *gin.Context) {
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": err,
+			"error": err.Error(),
 		})
 		return
 	}
@@ -74,6 +74,7 @@ func (handler *roleHandler) HandleGetRoleByID(ctx *gin.Context) {
 	role := handler.roleService.GetRoleByID(roleID)
 	ctx.JSON(http.StatusOK, role)
 }
+
 func (handler *roleHandler) HandleUpdateRole(ctx *gin.Context) {
 	var handleRoleRequest handleRoleRequest
 	err := ctx.ShouldBindBodyWithJSON(&handleRoleRequest)

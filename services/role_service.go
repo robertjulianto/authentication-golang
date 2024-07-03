@@ -1,6 +1,8 @@
 package services
 
 import (
+	"errors"
+	"fmt"
 	"ims/repositories"
 	"ims/types"
 )
@@ -27,6 +29,11 @@ func NewRoleService(roleRepository repositories.RoleRepository) *roleService {
 }
 
 func (service *roleService) CreateRole(name string) error {
+	role := service.roleRepository.GetRoleByName(name)
+	if role.ID != 0 {
+		errorMsg := fmt.Sprintf("Role with name %v already exists", name)
+		return errors.New(errorMsg)
+	}
 	err := service.roleRepository.CreateRole(name)
 	return err
 }
