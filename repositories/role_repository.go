@@ -12,8 +12,8 @@ type roleRepository struct {
 type RoleRepository interface {
 	CreateRole(name string) error
 	GetAllRoles() []types.Role
-	GetRoleByID(ID int) types.Role
-	GetRoleByName(name string) types.Role
+	GetRoleByID(ID int) *types.Role
+	GetRoleByName(name string) *types.Role
 	UpdateRole(role *types.Role) error
 	DeleteRoleByID(ID int) error
 }
@@ -36,15 +36,18 @@ func (repo *roleRepository) GetAllRoles() []types.Role {
 	return roles
 }
 
-func (repo *roleRepository) GetRoleByID(ID int) types.Role {
-	var role types.Role
+func (repo *roleRepository) GetRoleByID(ID int) *types.Role {
+	var role *types.Role
 	repo.db.GetInstance().Find(&role, ID)
 	return role
 }
 
-func (repo *roleRepository) GetRoleByName(name string) types.Role {
-	var role types.Role
+func (repo *roleRepository) GetRoleByName(name string) *types.Role {
+	var role *types.Role
 	repo.db.GetInstance().Where("name = ?", name).First(&role)
+	if role.ID == 0 {
+		return nil
+	}
 	return role
 }
 

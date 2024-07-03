@@ -14,7 +14,7 @@ type roleService struct {
 type RoleService interface {
 	CreateRole(name string) error
 	GetAllRoles() []types.Role
-	GetRoleByID(ID int) types.Role
+	GetRoleByID(ID int) *types.Role
 	UpdateRole(spec UpdateRoleSpec) error
 	DeleteRoleByID(ID int) error
 }
@@ -30,7 +30,7 @@ func NewRoleService(roleRepository repositories.RoleRepository) *roleService {
 
 func (service *roleService) CreateRole(name string) error {
 	role := service.roleRepository.GetRoleByName(name)
-	if role.ID != 0 {
+	if role != nil {
 		errorMsg := fmt.Sprintf("Role with name %v already exists", name)
 		return errors.New(errorMsg)
 	}
@@ -42,14 +42,14 @@ func (service *roleService) GetAllRoles() []types.Role {
 	return service.roleRepository.GetAllRoles()
 }
 
-func (service *roleService) GetRoleByID(ID int) types.Role {
+func (service *roleService) GetRoleByID(ID int) *types.Role {
 	return service.roleRepository.GetRoleByID(ID)
 }
 
 func (service *roleService) UpdateRole(spec UpdateRoleSpec) error {
 	role := service.roleRepository.GetRoleByID(spec.ID)
 	role.Name = spec.RoleName
-	err := service.roleRepository.UpdateRole(&role)
+	err := service.roleRepository.UpdateRole(role)
 	return err
 }
 

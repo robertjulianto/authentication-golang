@@ -72,6 +72,10 @@ func (handler *roleHandler) HandleGetAllRoles(ctx *gin.Context) {
 func (handler *roleHandler) HandleGetRoleByID(ctx *gin.Context) {
 	roleID, _ := strconv.Atoi(ctx.Param("id"))
 	role := handler.roleService.GetRoleByID(roleID)
+	if role == nil {
+		ctx.JSON(http.StatusOK, gin.H{})
+		return
+	}
 	ctx.JSON(http.StatusOK, role)
 }
 
