@@ -48,5 +48,13 @@ func (s *server) Start() error {
 	router.PUT("/roles/:id", roleHandler.HandleUpdateRole)
 	router.DELETE("/roles/:id", roleHandler.HandleDeleteRole)
 
+	userRoleRepository := repositories.NewUserRoleRepository(s.db)
+	userRoleService := services.NewUserRoleService(userRoleRepository, userRepository)
+	userRoleHandler := handlers.NewUserRoleHandler(userRoleService)
+
+	router.POST("user_roles", userRoleHandler.HandleCreateUserRole)
+	router.DELETE("user_roles", userRoleHandler.HandleDeleteUserRole)
+	router.GET("user_roles/:role_id", userRoleHandler.HandleGetRoleMembers)
+
 	return router.Run(s.listenAddr)
 }

@@ -14,6 +14,7 @@ type UserRepository interface {
 	GetAllUsers() []types.User
 	GetUserByID(ID int) *types.User
 	GetUserByUserName(userName string) *types.User
+	GetUsersByUserIDs(IDs []int) []types.User
 	UpdateUser(user *types.User) error
 	DeleteUserByID(ID int) error
 }
@@ -54,6 +55,12 @@ func (repo *userRepository) GetUserByUserName(userName string) *types.User {
 		return nil
 	}
 	return user
+}
+
+func (repo *userRepository) GetUsersByUserIDs(IDs []int) []types.User {
+	var users []types.User
+	repo.db.GetInstance().Find(&users, IDs)
+	return users
 }
 
 func (repo *userRepository) UpdateUser(user *types.User) error {
