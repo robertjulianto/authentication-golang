@@ -4,8 +4,9 @@ import "gorm.io/gorm"
 
 type Access struct {
 	gorm.Model
-	Name      string
-	CreatedBy string
-	UpdatedBy string
-	DeletedBy string
+	Name       string
+	AccessCode string
+	CreatedBy  string
+	UpdatedBy  string
+	DeletedBy  string
 }
