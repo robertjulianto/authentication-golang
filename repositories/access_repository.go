@@ -15,6 +15,7 @@ type AccessRepository interface {
 	GetAccessByID(ID int) *types.Access
 	GetAccessByName(name string) *types.Access
 	GetAccessByCode(code string) *types.Access
+	GetAccessesByAccessIDs(IDs []int) []types.Access
 	DeleteAccessByID(ID int) error
 }
 
@@ -62,6 +63,12 @@ func (repo *accessRepository) GetAccessByCode(code string) *types.Access {
 		return nil
 	}
 	return access
+}
+
+func (repo *accessRepository) GetAccessesByAccessIDs(IDs []int) []types.Access {
+	var accesses []types.Access
+	repo.db.GetInstance().Find(&accesses, IDs)
+	return accesses
 }
 
 func (repo *accessRepository) DeleteAccessByID(ID int) error {
