@@ -56,5 +56,16 @@ func (s *server) Start() error {
 	router.DELETE("user_roles", userRoleHandler.HandleDeleteUserRole)
 	router.GET("user_roles/:role_id", userRoleHandler.HandleGetRoleMembers)
 
+	accessRepository := repositories.NewAccessRepository(s.db)
+	accessService := services.NewAccessService(accessRepository)
+	accessHandler := handlers.NewAccessHandler(accessService)
+
+	router.GET("/accesses", accessHandler.HandleGetAllAccesses)
+	router.POST("/accesses", accessHandler.HandleCreateAccess)
+	router.GET("/accesses/:id", accessHandler.HandleGetAccessByID)
+	router.DELETE("/accesses/:id", accessHandler.HandleDeleteAccess)
+	router.GET("/accesses/name", accessHandler.HandleGetAccessByNameRequest)
+	router.GET("/accesses/code", accessHandler.HandleGetAccessByCodeRequest)
+
 	return router.Run(s.listenAddr)
 }
